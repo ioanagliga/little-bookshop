@@ -1,9 +1,9 @@
- package com.bookrenting;
+package com.bookrenting;
 
 public class Book {
-    private  String author;
-    private  String title;
-    private  int stock;
+    private String author;
+    private String title;
+    private int stock;
 
     public String getAuthor() {
         return author;

@@ -10,11 +10,12 @@ import java.util.Map;
 
 public class BookAuthors {
 
-    public List<Book> initialiseData(String filePath) throws IOException {
 
+    public List<Book> initialiseData(String filePath) throws IOException {
 
         List<String> database = Files.readAllLines(Paths.get(filePath));
         List<Book> bookData = new ArrayList<>();
+
         for (String line : database) {
             String[] lineElement = line.split(";");
             String author = lineElement[0];
@@ -26,6 +27,7 @@ public class BookAuthors {
         }
         return bookData;
     }
+
 
     public Map<String, List<Book>> groupData(List<Book> bookData) {
 
@@ -43,23 +45,63 @@ public class BookAuthors {
                 booksAndAuthors.put(author, booksByAuthor);
             }
         }
-
         return booksAndAuthors;
     }
 
+
     public void searchAndDisplay(String author, Map<String, List<Book>> booksAndAuthors) {
+        int index = 0;
         if (booksAndAuthors.containsKey(author)) {
             List<Book> booksByAuthor = booksAndAuthors.get(author);
             System.out.println("Author found. Books by them:");
             for (Book book : booksByAuthor) {
-                System.out.println("Title:" + book.getTitle() + "\nStock:" + book.getStock());
+                booksByAuthor.get(index);
+                System.out.println(index + ".\t" + "\"" + book.getTitle() + "\"");
+                index++;
             }
 
         } else {
             System.out.println("Author  NOT found.");
+            System.exit(0);
         }
-
     }
+
+    public void searchTitle(int index, String author, Map<String, List<Book>> booksAndAuthors) {
+
+        if (booksAndAuthors.containsKey(author)) {
+            List<Book> booksByAuthor = booksAndAuthors.get(author);
+            for (Book book : booksByAuthor) {
+
+                if (booksByAuthor.indexOf(book) == index) {
+
+                    System.out.println("Chosen book: " + "\"" + book.getTitle() + "\"" + "\nThere are " + book.getStock() + " books with this title in stock.");
+
+                }
+            }
+
+        } else System.out.println("Not a valid option :(");
+    }
+
+    public void checkQuantity(int stock, int index, String author, Map<String, List<Book>> booksAndAuthors) {
+        if (booksAndAuthors.containsKey(author)) {
+            List<Book> booksByAuthor = booksAndAuthors.get(author);
+            for (Book book : booksByAuthor) {
+
+                if (booksByAuthor.indexOf(book) == index) {
+
+                    if (book.getStock() >= stock) {
+                        int i = book.getStock() - stock;
+                        System.out.println("You purchased " + stock + " books.");
+                        System.out.println("There are " + i + " books left.");
+
+                    } else {
+                        System.out.println("Not enough stock!");
+                    }
+                }
+            }
+        }
+    }
+
 
     private Book generateBook(String author, String title, int stock) {
         Book myBook = new Book();
@@ -68,6 +110,4 @@ public class BookAuthors {
         myBook.setStock(stock);
         return myBook;
     }
-
-
 }
