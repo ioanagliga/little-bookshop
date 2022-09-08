@@ -90,9 +90,10 @@ public class BookAuthors {
                 if (booksByAuthor.indexOf(book) == index) {
 
                     if (book.getStock() >= stock) {
-                        int i = book.getStock() - stock;
+                        int stockLeft = book.getStock() - stock;
                         System.out.println("You purchased " + stock + " books.");
-                        System.out.println("There are " + i + " books left.");
+                        System.out.println("There are " +  stockLeft  + " books left.");
+                        book.setStock(stockLeft);
 
                     } else {
                         System.out.println("Not enough stock!");

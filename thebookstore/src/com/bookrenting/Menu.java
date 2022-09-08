@@ -18,13 +18,14 @@ public class Menu {
         System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Exit");
         int optionNumber = userInput.nextInt();
         switch (optionNumber) {
-            case 1 -> {
+            case 1 : {
                 Scanner searchedAuthor = new Scanner(System.in);
                 System.out.println("Enter author's name:");
                 String authorSearch = searchedAuthor.nextLine();
                 booksAndAuthors.searchAndDisplay(authorSearch, bookAndAuthorsMapping);
             }
-            case 2 -> {
+            break;
+            case 2 : {
                 Scanner buyInputOption = new Scanner(System.in);
                 System.out.println("Enter the author's name:");
                 String author = buyInputOption.nextLine();
@@ -38,16 +39,25 @@ public class Menu {
                 System.out.println("1.Buy some more? \n \t or \n 2.exit?");
                 secondaryMenu();
             }
-            case 3 -> System.exit(0);
-            default -> System.out.println("Invalid selection.");
+            break;
+            case 3 :
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid selection.");
+                break;
         }
     }
 
     public void secondaryMenu() {
         int nextOption = userInput.nextInt();
         switch (nextOption) {
-            case 1 -> mainMenu();
-            case 2 -> System.exit(0);
+            case 1:
+                mainMenu();
+                break;
+            case 2:
+                System.exit(0);
+                break;
         }
     }
 }
