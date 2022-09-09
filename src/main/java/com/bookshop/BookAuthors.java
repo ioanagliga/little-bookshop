@@ -1,4 +1,4 @@
-package com.bookrenting;
+package com.bookshop;
 
 import java.io.IOException;
 import java.nio.file.Files;

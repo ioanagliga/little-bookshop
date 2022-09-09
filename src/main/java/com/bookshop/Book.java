@@ -1,4 +1,4 @@
-package com.bookrenting;
+package com.bookshop;
 
 public class Book {
     private String author;

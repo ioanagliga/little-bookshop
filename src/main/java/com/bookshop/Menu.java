@@ -1,4 +1,4 @@
-package com.bookrenting;
+package com.bookshop;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Menu {
     BookAuthors booksAndAuthors = new BookAuthors();
-    List<Book> books = booksAndAuthors.initialiseData("D:\\Progrumming\\little-bookshop\\thebookstore\\database.txt");
+    List<Book> books = booksAndAuthors.initialiseData("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\database.txt");
     Map<String, List<Book>> bookAndAuthorsMapping = booksAndAuthors.groupData(books);
     Scanner userInput = new Scanner(System.in);
 
