@@ -1,5 +1,12 @@
 package com.bookshop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -58,6 +65,7 @@ public class BookAuthors {
                 booksByAuthor.get(index);
                 System.out.println(index + ".\t" + "\"" + book.getTitle() + "\"");
                 index++;
+
             }
 
         } else {
@@ -92,7 +100,7 @@ public class BookAuthors {
                     if (book.getStock() >= stock) {
                         int stockLeft = book.getStock() - stock;
                         System.out.println("You purchased " + stock + " books.");
-                        System.out.println("There are " +  stockLeft  + " books left.");
+                        System.out.println("There are " + stockLeft + " books left.");
                         book.setStock(stockLeft);
 
                     } else {
@@ -101,6 +109,28 @@ public class BookAuthors {
                 }
             }
         }
+    }
+
+    public Map<String, List<Book>> createOutputFile(List<Book> bookData) throws IOException {
+        Map<String, List<Book>> booksAndAuthors = new HashMap<>();
+        for (Book book : bookData) {
+            String author = book.getAuthor();
+            if (booksAndAuthors.containsKey(author)) {
+                List<Book> booksByAuthor = booksAndAuthors.get(author);
+                booksByAuthor.add(book);
+            } else {
+                List<Book> booksByAuthor = new ArrayList<>();
+                booksByAuthor.add(book);
+
+                booksAndAuthors.put(author, booksByAuthor);
+            }
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        writer.writeValue(Paths.get("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\output.json").toFile(),booksAndAuthors);
+
+        return booksAndAuthors;
+
     }
 
 

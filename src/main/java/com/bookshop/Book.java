@@ -1,5 +1,9 @@
 package com.bookshop;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties("author")
+
 public class Book {
     private String author;
     private String title;

@@ -1,5 +1,7 @@
 package com.bookshop;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class Menu {
     public Menu() throws IOException {
     }
 
-    public void mainMenu() {
+    public void mainMenu() throws IOException {
         System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Exit");
         int optionNumber = userInput.nextInt();
         switch (optionNumber) {
@@ -41,7 +43,10 @@ public class Menu {
             }
             break;
             case 3 :
+                //  System.out.println(booksAndAuthors.groupData(books));
+                System.out.println( booksAndAuthors.createOutputFile(books));
                 System.exit(0);
+
                 break;
             default:
                 System.out.println("Invalid selection.");
@@ -49,13 +54,14 @@ public class Menu {
         }
     }
 
-    public void secondaryMenu() {
+    public void secondaryMenu() throws IOException {
         int nextOption = userInput.nextInt();
         switch (nextOption) {
             case 1:
                 mainMenu();
                 break;
             case 2:
+                System.out.println( booksAndAuthors.createOutputFile(books));
                 System.exit(0);
                 break;
         }
