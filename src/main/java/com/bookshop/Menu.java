@@ -9,8 +9,10 @@ import java.util.Scanner;
 
 public class Menu {
     BookAuthors booksAndAuthors = new BookAuthors();
-    List<Book> books = booksAndAuthors.initialiseData("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\database.txt");
+    List<Book> books = booksAndAuthors.deserializeJsonData();
     Map<String, List<Book>> bookAndAuthorsMapping = booksAndAuthors.groupData(books);
+
+
     Scanner userInput = new Scanner(System.in);
 
     public Menu() throws IOException {
@@ -24,27 +26,27 @@ public class Menu {
                 Scanner searchedAuthor = new Scanner(System.in);
                 System.out.println("Enter author's name:");
                 String authorSearch = searchedAuthor.nextLine();
-                booksAndAuthors.searchAndDisplay(authorSearch, bookAndAuthorsMapping);
+                booksAndAuthors.searchAndDisplay(authorSearch,  bookAndAuthorsMapping);
             }
             break;
             case 2 : {
                 Scanner buyInputOption = new Scanner(System.in);
                 System.out.println("Enter the author's name:");
                 String author = buyInputOption.nextLine();
-                booksAndAuthors.searchAndDisplay(author, bookAndAuthorsMapping);
+                booksAndAuthors.searchAndDisplay(author,  bookAndAuthorsMapping);
                 System.out.println("Choose your book: ");
                 int index = buyInputOption.nextInt();
-                booksAndAuthors.searchTitle(index, author, bookAndAuthorsMapping);
+                booksAndAuthors.searchTitle(index, author,  bookAndAuthorsMapping);
                 System.out.println("How many books do you want to buy? Enter quantity:");
                 int stock = buyInputOption.nextInt();
-                booksAndAuthors.checkQuantity(stock, index, author, bookAndAuthorsMapping);
+                booksAndAuthors.checkQuantity(stock, index, author,  bookAndAuthorsMapping);
                 System.out.println("1.Buy some more? \n \t or \n 2.exit?");
                 secondaryMenu();
             }
             break;
             case 3 :
-                //  System.out.println(booksAndAuthors.groupData(books));
-                System.out.println( booksAndAuthors.createOutputFile(books));
+
+             booksAndAuthors.createOutputFile(books);
                 System.exit(0);
 
                 break;
@@ -61,7 +63,7 @@ public class Menu {
                 mainMenu();
                 break;
             case 2:
-                System.out.println( booksAndAuthors.createOutputFile(books));
+                booksAndAuthors.createOutputFile(books);
                 System.exit(0);
                 break;
         }

@@ -1,14 +1,12 @@
 package com.bookshop;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,24 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 public class BookAuthors {
-
-
-    public List<Book> initialiseData(String filePath) throws IOException {
-
-        List<String> database = Files.readAllLines(Paths.get(filePath));
-        List<Book> bookData = new ArrayList<>();
-
-        for (String line : database) {
-            String[] lineElement = line.split(";");
-            String author = lineElement[0];
-            String title = lineElement[1];
-            int stock = Integer.parseInt(lineElement[2]);
-
-            Book book = generateBook(author, title, stock);
-            bookData.add(book);
-        }
-        return bookData;
-    }
 
 
     public Map<String, List<Book>> groupData(List<Book> bookData) {
@@ -52,9 +32,9 @@ public class BookAuthors {
                 booksAndAuthors.put(author, booksByAuthor);
             }
         }
+
         return booksAndAuthors;
     }
-
 
     public void searchAndDisplay(String author, Map<String, List<Book>> booksAndAuthors) {
         int index = 0;
@@ -111,34 +91,20 @@ public class BookAuthors {
         }
     }
 
-    public Map<String, List<Book>> createOutputFile(List<Book> bookData) throws IOException {
-        Map<String, List<Book>> booksAndAuthors = new HashMap<>();
-        for (Book book : bookData) {
-            String author = book.getAuthor();
-            if (booksAndAuthors.containsKey(author)) {
-                List<Book> booksByAuthor = booksAndAuthors.get(author);
-                booksByAuthor.add(book);
-            } else {
-                List<Book> booksByAuthor = new ArrayList<>();
-                booksByAuthor.add(book);
+    public void createOutputFile(List<Book> bookData) throws IOException {
 
-                booksAndAuthors.put(author, booksByAuthor);
-            }
-        }
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        writer.writeValue(Paths.get("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\output.json").toFile(),booksAndAuthors);
-
-        return booksAndAuthors;
+        writer.writeValue(Paths.get("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\output.json").toFile(), bookData);
 
     }
 
-
-    private Book generateBook(String author, String title, int stock) {
-        Book myBook = new Book();
-        myBook.setAuthor(author);
-        myBook.setTitle(title);
-        myBook.setStock(stock);
-        return myBook;
+    public List<Book> deserializeJsonData() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        File src = Paths.get("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\output.json").toFile();
+        CollectionType valueType = mapper.getTypeFactory().constructCollectionType(List.class, Book.class);
+        List<Book> books = mapper.readValue(src, valueType);
+        return books;
     }
+
 }

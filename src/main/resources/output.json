@@ -1,61 +1,69 @@
-{
-  "Andrzej Sapkowski" : [ {
-    "title" : "The Last Wish",
-    "stock" : 13
-  }, {
-    "title" : "Sword of Destiny",
-    "stock" : 14
-  }, {
-    "title" : "Blood of Elves",
-    "stock" : 15
-  }, {
-    "title" : "Time of Contempt",
-    "stock" : 12
-  }, {
-    "title" : "Baptism of Fire",
-    "stock" : 10
-  }, {
-    "title" : "The Tower of the Swallow",
-    "stock" : 8
-  }, {
-    "title" : "The Lady of the Lake",
-    "stock" : 7
-  }, {
-    "title" : "Season of Storms",
-    "stock" : 9
-  } ],
-  "Isaac Asimov" : [ {
-    "title" : "Foundation Series",
-    "stock" : 3
-  } ],
-  "Mary Shelley" : [ {
-    "title" : "Frankenstein",
-    "stock" : 7
-  } ],
-  "Frank Herbert" : [ {
-    "title" : "Dune",
-    "stock" : 12
-  }, {
-    "title" : "Children of Dune",
-    "stock" : 7
-  }, {
-    "title" : "Heretics of Dune",
-    "stock" : 10
-  } ],
-  "Brian Sanderson" : [ {
-    "title" : "The Stormlight Archive Series",
-    "stock" : 6
-  } ],
-  "Margaret Atwood" : [ {
-    "title" : "The Handmaid's Tale",
-    "stock" : 6
-  } ],
-  "George Orwell" : [ {
-    "title" : "1984",
-    "stock" : 4
-  } ],
-  "Ray Bradbury" : [ {
-    "title" : "Fahrenheit 451",
-    "stock" : 9
-  } ]
-}
+[ {
+  "author" : "Frank Herbert",
+  "title" : "Dune",
+  "stock" : 12
+}, {
+  "author" : "Frank Herbert",
+  "title" : "Children of Dune",
+  "stock" : 14
+}, {
+  "author" : "Frank Herbert",
+  "title" : "Heretics of Dune",
+  "stock" : 0
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "The Last Wish",
+  "stock" : 13
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "Sword of Destiny",
+  "stock" : 14
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "Blood of Elves",
+  "stock" : 15
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "Time of Contempt",
+  "stock" : 12
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "Baptism of Fire",
+  "stock" : 10
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "The Tower of the Swallow",
+  "stock" : 8
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "The Lady of the Lake",
+  "stock" : 7
+}, {
+  "author" : "Andrzej Sapkowski",
+  "title" : "Season of Storms",
+  "stock" : 9
+}, {
+  "author" : "Isaac Asimov",
+  "title" : "Foundation Series",
+  "stock" : 3
+}, {
+  "author" : "Brian Sanderson",
+  "title" : "The Stormlight Archive Series",
+  "stock" : 6
+}, {
+  "author" : "Margaret Atwood",
+  "title" : "The Handmaid's Tale",
+  "stock" : 6
+}, {
+  "author" : "Ray Bradbury",
+  "title" : "Fahrenheit 451",
+  "stock" : 9
+}, {
+  "author" : "Mary Shelley",
+  "title" : "Frankenstein",
+  "stock" : 7
+}, {
+  "author" : "George Orwell",
+  "title" : "1984",
+  "stock" : 4
+} ]

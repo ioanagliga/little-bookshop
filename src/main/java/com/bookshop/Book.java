@@ -1,9 +1,5 @@
 package com.bookshop;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties("author")
-
 public class Book {
     private String author;
     private String title;
@@ -31,5 +27,14 @@ public class Book {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", stock=" + stock +
+                '}';
     }
 }
