@@ -99,6 +99,15 @@ public class BookAuthors {
 
     }
 
+    public Book checkDuplicateBook(String author, String title, List<Book> books) {
+        for (Book book : books) {
+            if (book.getAuthor().equals(author) && book.getTitle().equals(title)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
     public List<Book> deserializeJsonData() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         File src = Paths.get("D:\\Progrumming\\little-bookshop\\src\\main\\resources\\output.json").toFile();

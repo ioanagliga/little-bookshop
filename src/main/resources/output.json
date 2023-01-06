@@ -9,7 +9,7 @@
 }, {
   "author" : "Frank Herbert",
   "title" : "Heretics of Dune",
-  "stock" : 0
+  "stock" : 10
 }, {
   "author" : "Andrzej Sapkowski",
   "title" : "The Last Wish",
@@ -66,4 +66,4 @@
   "author" : "George Orwell",
   "title" : "1984",
   "stock" : 4
-} ]
+}]
