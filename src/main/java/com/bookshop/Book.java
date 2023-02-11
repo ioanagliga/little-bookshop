@@ -1,9 +1,18 @@
 package com.bookshop;
 
 public class Book {
+    private int id;
     private String author;
     private String title;
     private int stock;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public String getAuthor() {
         return author;

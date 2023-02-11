@@ -5,7 +5,7 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository;
 
-    public BookService() throws IOException {
+    public BookService() {
         this.bookRepository = new BookRepository();
     }
 
@@ -70,7 +70,11 @@ public class BookService {
         if (!bookFound) {
             books.add(newBook);
         }
-        bookRepository.saveData();
+       bookRepository.saveData();
     }
-
+    public void showDBTest()
+    {
+        List<Book> books = bookRepository.getAllBooks();
+        System.out.println(books);
+    }
 }

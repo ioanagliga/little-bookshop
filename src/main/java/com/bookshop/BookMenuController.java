@@ -10,10 +10,11 @@ public class BookMenuController {
     public BookMenuController() throws IOException {
         this.userInput = new Scanner(System.in);
         this.bookService = new BookService();
+
     }
 
     public void mainMenu() throws IOException {
-        System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Add book \n 4.Exit");
+        System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Add book \n 4.Exit \n 5.Show DB test");
         int optionNumber = userInput.nextInt();
         switch (optionNumber) {
             case 1: {
@@ -30,6 +31,10 @@ public class BookMenuController {
             break;
             case 4: {
 
+                System.exit(0);
+            }
+            case 5: {
+                showDBtestMenu();
                 System.exit(0);
             }
             break;
@@ -90,5 +95,9 @@ public class BookMenuController {
                 System.exit(0);
                 break;
         }
+    }
+    public void showDBtestMenu()
+    {
+        bookService.showDBTest();
     }
 }
