@@ -1,20 +1,21 @@
 package com.bookshop;
-import java.io.IOException;
+
 import java.util.Scanner;
 
 public class BookMenuController {
 
     private final Scanner userInput;
-    private final BookService bookService;
+    // private final BookService bookService;
+    private final DBTestService dbTestService;
 
-    public BookMenuController() throws IOException {
+    public BookMenuController() {
         this.userInput = new Scanner(System.in);
-        this.bookService = new BookService();
-
+        // this.bookService = new BookService();
+        this.dbTestService = new DBTestService();
     }
 
-    public void mainMenu() throws IOException {
-        System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Add book \n 4.Exit \n 5.Show DB test");
+    public void mainMenu() {
+        System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Add book \n 4.Exit ");
         int optionNumber = userInput.nextInt();
         switch (optionNumber) {
             case 1: {
@@ -33,10 +34,7 @@ public class BookMenuController {
 
                 System.exit(0);
             }
-            case 5: {
-                showDBtestMenu();
-                System.exit(0);
-            }
+
             break;
             default:
                 System.out.println("Invalid selection.");
@@ -44,7 +42,7 @@ public class BookMenuController {
         }
     }
 
-    private void showAddBookMenu() throws IOException {
+    private void showAddBookMenu() {
         Scanner addNewBookOption = new Scanner(System.in);
         System.out.println("Author's name:");
         String author = addNewBookOption.nextLine();
@@ -56,36 +54,43 @@ public class BookMenuController {
         book.setAuthor(author);
         book.setTitle(title);
         book.setStock(stock);
-        bookService.addNewBookToStore(book);
+        // bookService.addNewBookToStore(book);
+        dbTestService.addNewBookToStore(author, title, stock);
         System.out.println("1.Return to main menu? \n \t or \n 2.exit?");
         showSecondaryMenu();
     }
 
-    private void showPurchaseMenu() throws IOException {
+    private void showPurchaseMenu() {
         Scanner buyInputOption = new Scanner(System.in);
         System.out.println("Enter the author's name:");
         String author = buyInputOption.nextLine();
-        bookService.searchAndDisplay(author);
+        dbTestService.searchAndDisplay(author);
         System.out.println("Choose your book: ");
-        int index = buyInputOption.nextInt();
-        bookService.searchTitle(index, author);
-        System.out.println("How many books do you want to buy? Enter quantity:");
-        int stock = buyInputOption.nextInt();
-        bookService.purchaseBook(stock, index, author);
+        String title = buyInputOption.nextLine();
+        if(dbTestService.checkBookExist(author, title)){
+            System.out.println("How many books do you want to buy? Enter quantity:");
+            int numberOfPurchasedBooks = buyInputOption.nextInt();
+            dbTestService.purchaseBook(author, title, numberOfPurchasedBooks);
+
+        }else {
+            System.out.println("Book does not exist in db");
+        }
+
         System.out.println("1.Buy some more? \n \t or \n 2.exit?");
         showSecondaryMenu();
     }
 
-    private void showSearchMenu() throws IOException {
+    private void showSearchMenu() {
         Scanner searchedAuthor = new Scanner(System.in);
         System.out.println("Enter author's name:");
         String authorSearch = searchedAuthor.nextLine();
-        bookService.searchAndDisplay(authorSearch);
+        // bookService.searchAndDisplay(authorSearch);
+        dbTestService.searchAndDisplay(authorSearch);
         System.out.println("1.Return to main menu? \n \t or \n 2.exit?");
         showSecondaryMenu();
     }
 
-    public void showSecondaryMenu() throws IOException {
+    public void showSecondaryMenu() {
         int nextOption = userInput.nextInt();
         switch (nextOption) {
             case 1:
@@ -96,8 +101,5 @@ public class BookMenuController {
                 break;
         }
     }
-    public void showDBtestMenu()
-    {
-        bookService.showDBTest();
-    }
+
 }

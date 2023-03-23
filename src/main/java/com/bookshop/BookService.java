@@ -37,7 +37,7 @@ public class BookService {
         }
     }
 
-    public void purchaseBook(int stock, int index, String author) throws IOException {
+    public void purchaseBook(int stock, int index, String author)  {
         List<Book> booksByAuthor = bookRepository.getBooksByAuthor(author);
         if (booksByAuthor.isEmpty()) {
             return;
@@ -50,7 +50,7 @@ public class BookService {
                     System.out.println("You purchased " + stock + " books.");
                     System.out.println("There are " + stockLeft + " books left.");
                     book.setStock(stockLeft);
-                    bookRepository.saveData();
+             //       bookRepository.saveData();
                 } else {
                     System.out.println("Not enough stock!");
                 }
@@ -58,7 +58,7 @@ public class BookService {
         }
     }
 
-    public void addNewBookToStore(Book newBook) throws IOException {
+    public void addNewBookToStore(Book newBook)  {
         List<Book> books = bookRepository.getAllBooks();
         boolean bookFound = false;
         for (Book book : books) {
@@ -70,11 +70,7 @@ public class BookService {
         if (!bookFound) {
             books.add(newBook);
         }
-       bookRepository.saveData();
+     //  bookRepository.saveData();
     }
-    public void showDBTest()
-    {
-        List<Book> books = bookRepository.getAllBooks();
-        System.out.println(books);
-    }
+
 }

@@ -1,16 +1,11 @@
 package com.bookshop;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.*;
 
 public class BookRepository {
-    private static final String FILE_PATH = "D:\\Progrumming\\little-bookshop\\src\\main\\resources\\output.json";
+
     private List<Book> books;
     static String query = "SELECT * FROM books_schema.books";
     private static final String dbPath = "jdbc:mysql://localhost:3306/books_schema?useSSL=false&allowPublicKeyRetrieval=true";
@@ -25,11 +20,8 @@ public class BookRepository {
     public List<Book> getAllBooks() {
         return books;
     }
-    public void saveData() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        writer.writeValue(Paths.get(FILE_PATH).toFile(), books);
-    }
+
+
     public List<Book> getBooksByAuthor(String author) {
         Map<String, List<Book>> booksAndAuthors = this.groupData();
         if (booksAndAuthors.containsKey(author)) {
