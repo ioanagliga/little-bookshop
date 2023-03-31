@@ -1,76 +1,45 @@
 package com.bookshop;
-import java.io.IOException;
-import java.util.List;
 
 public class BookService {
     private final BookRepository bookRepository;
 
-    public BookService() {
-        this.bookRepository = new BookRepository();
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public void searchAndDisplay(String author) {
-        int index = 0;
-        List<Book> booksByAuthor = bookRepository.getBooksByAuthor(author);
-        if (!booksByAuthor.isEmpty()) {
+        if (!bookRepository.searchBook(author).isEmpty()) {
             System.out.println("Author found. Books by them:");
-            for (Book book : booksByAuthor) {
-                System.out.println(index + ".\t" + "\"" + book.getTitle() + "\"");
-                index++;
-            }
+            System.out.println(bookRepository.searchBook(author));
+
         } else {
             System.out.println("Author  NOT found.");
             System.exit(0);
         }
     }
 
-    public void searchTitle(int index, String author) {
-        List<Book> booksByAuthor = bookRepository.getBooksByAuthor(author);
-        if (!booksByAuthor.isEmpty()) {
-            for (Book book : booksByAuthor) {
-                if (booksByAuthor.indexOf(book) == index) {
-                    System.out.println("Chosen book: " + "\"" + book.getTitle() + "\"" + "\nThere are " + book.getStock() + " books with this title in stock.");
-                }
-            }
+    public void addNewBookToStore(String author, String title, int stock) {
+
+        if (bookRepository.findMatchingBook(author, title)) {
+            System.out.println("book already in db.Updating stock.");
+            bookRepository.updateStockIfBookExist(author, title, stock);
         } else {
-            System.out.println("Not a valid option :(");
+            bookRepository.addBook(author, title, stock);
+            System.out.println("Added new book.");
         }
     }
 
-    public void purchaseBook(int stock, int index, String author)  {
-        List<Book> booksByAuthor = bookRepository.getBooksByAuthor(author);
-        if (booksByAuthor.isEmpty()) {
-            return;
-        }
-
-        for (Book book : booksByAuthor) {
-            if (booksByAuthor.indexOf(book) == index) {
-                if (book.getStock() >= stock) {
-                    int stockLeft = book.getStock() - stock;
-                    System.out.println("You purchased " + stock + " books.");
-                    System.out.println("There are " + stockLeft + " books left.");
-                    book.setStock(stockLeft);
-             //       bookRepository.saveData();
-                } else {
-                    System.out.println("Not enough stock!");
-                }
-            }
-        }
+    public boolean checkBookExist(String author, String title) {
+        return bookRepository.findMatchingBook(author, title);
     }
 
-    public void addNewBookToStore(Book newBook)  {
-        List<Book> books = bookRepository.getAllBooks();
-        boolean bookFound = false;
-        for (Book book : books) {
-            if (book.getAuthor().equals(newBook.getAuthor()) && book.getTitle().equals(newBook.getTitle())) {
-                bookFound = true;
-                book.setStock(book.getStock() + newBook.getStock());
-            }
+    public void purchaseBook(String author, String title, int numberOfPurchasedBooks) {
+        if (bookRepository.getStock(author, title) >= numberOfPurchasedBooks) {
+            bookRepository.purchaseBook(author, title, numberOfPurchasedBooks);
+        } else {
+            System.out.println("Not enough stock :(");
         }
-        if (!bookFound) {
-            books.add(newBook);
-        }
-     //  bookRepository.saveData();
     }
 
 }

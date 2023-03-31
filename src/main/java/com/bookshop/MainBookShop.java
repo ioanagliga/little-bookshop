@@ -1,12 +1,15 @@
 package com.bookshop;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 public class MainBookShop {
 
-    public static void main(String[] args) throws IOException, SQLException {
-        BookMenuController controller = new BookMenuController();
+    public static void main(String[] args) {
+
+        ApplicationContext context =new AnnotationConfigApplicationContext(BookShopConfig.class);
+        BookMenuController controller = context.getBean(BookMenuController.class);
         controller.mainMenu();
 
 

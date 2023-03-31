@@ -1,17 +1,20 @@
 package com.bookshop;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.Scanner;
 
+@Component
 public class BookMenuController {
 
     private final Scanner userInput;
-    // private final BookService bookService;
-    private final DBTestService dbTestService;
+    private final BookService bookService;
 
-    public BookMenuController() {
-        this.userInput = new Scanner(System.in);
-        // this.bookService = new BookService();
-        this.dbTestService = new DBTestService();
+    @Autowired
+    public BookMenuController(Scanner userInput, BookService bookService) {
+        this.userInput = userInput;
+        this.bookService = bookService;
     }
 
     public void mainMenu() {
@@ -54,8 +57,7 @@ public class BookMenuController {
         book.setAuthor(author);
         book.setTitle(title);
         book.setStock(stock);
-        // bookService.addNewBookToStore(book);
-        dbTestService.addNewBookToStore(author, title, stock);
+        bookService.addNewBookToStore(author, title, stock);
         System.out.println("1.Return to main menu? \n \t or \n 2.exit?");
         showSecondaryMenu();
     }
@@ -64,15 +66,15 @@ public class BookMenuController {
         Scanner buyInputOption = new Scanner(System.in);
         System.out.println("Enter the author's name:");
         String author = buyInputOption.nextLine();
-        dbTestService.searchAndDisplay(author);
+        bookService.searchAndDisplay(author);
         System.out.println("Choose your book: ");
         String title = buyInputOption.nextLine();
-        if(dbTestService.checkBookExist(author, title)){
+        if (bookService.checkBookExist(author, title)) {
             System.out.println("How many books do you want to buy? Enter quantity:");
             int numberOfPurchasedBooks = buyInputOption.nextInt();
-            dbTestService.purchaseBook(author, title, numberOfPurchasedBooks);
+            bookService.purchaseBook(author, title, numberOfPurchasedBooks);
 
-        }else {
+        } else {
             System.out.println("Book does not exist in db");
         }
 
@@ -84,8 +86,7 @@ public class BookMenuController {
         Scanner searchedAuthor = new Scanner(System.in);
         System.out.println("Enter author's name:");
         String authorSearch = searchedAuthor.nextLine();
-        // bookService.searchAndDisplay(authorSearch);
-        dbTestService.searchAndDisplay(authorSearch);
+        bookService.searchAndDisplay(authorSearch);
         System.out.println("1.Return to main menu? \n \t or \n 2.exit?");
         showSecondaryMenu();
     }
