@@ -1,9 +1,18 @@
+
 package com.bookshop;
 
+import javax.persistence.*;
+
+@Entity
 public class Book {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
+    @Column(nullable = false)
     private String author;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private int stock;
 
     public void setId(int id) {

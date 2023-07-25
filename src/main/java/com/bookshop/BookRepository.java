@@ -1,49 +1,51 @@
 package com.bookshop;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+@Repository
+public class BookRepository  {
 
-public class BookRepository {
 
-    private List<Book> books;
     static String query = "SELECT * FROM books_schema.books";
-    private static final String dbPath = "jdbc:mysql://localhost:3306/books_schema?useSSL=false&allowPublicKeyRetrieval=true";
-    private static final String user = "root";
-    private static final String password = "admin";
+    @Value("${datasource.url}")
+    private String dbPath;
+    @Value("${datasource.username}")
+    private String user;
+    @Value("${datasource.password}")
+    private String password;
 
-    public BookRepository() {
-        this.books = this.loadData();
+protected List<Book> findAll(){
+    List<Book> books = new ArrayList<>();
+    String searchTable = "SELECT * FROM books_schema.books";
+    try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
+        PreparedStatement prepareStatement = connection.prepareStatement(searchTable);
+        ResultSet resultSet = prepareStatement.executeQuery();
+        while (resultSet.next()) {
+            Book book = new Book();
+            book.setAuthor(resultSet.getString("Author"));
+            book.setTitle(resultSet.getString("Title"));
+            book.setStock(resultSet.getInt("Stock"));
+            books.add(book);
 
-    }
-
-    protected List<Book> loadData() {
-        try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            this.books = new ArrayList<>();
-            while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("ID"));
-                book.setAuthor(resultSet.getString("Author"));
-                book.setTitle(resultSet.getString("Title"));
-                book.setStock(resultSet.getInt("Stock"));
-                books.add(book);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return books;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-
+    return books;
+}
     protected List<Book> searchBook(String author) {
+        List<Book> books = new ArrayList<>();
         String searchTable = "SELECT Author, Title, Stock FROM books WHERE author LIKE ?";
         try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
             PreparedStatement prepareStatement = connection.prepareStatement(searchTable);
             prepareStatement.setString(1, author);
             ResultSet resultSet = prepareStatement.executeQuery();
-            this.books = new ArrayList<>();
+
             while (resultSet.next()) {
                 Book book = new Book();
                 book.setAuthor(resultSet.getString("Author"));
@@ -58,7 +60,8 @@ public class BookRepository {
         return books;
     }
 
-    protected List<Book> addBook(String author, String title, int stock) {
+    protected void addBook(String author, String title, int stock) {
+
         String addInTable = "INSERT INTO books (Author, Title, Stock) VALUES (?,?,?)";
         try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
             PreparedStatement prepareStatement = connection.prepareStatement(addInTable);
@@ -71,7 +74,7 @@ public class BookRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return books;
+
     }
 
     protected void updateStockIfBookExist(String author, String title, int stock) {
@@ -105,34 +108,35 @@ public class BookRepository {
 
     }
 
-   public int getStock(String author, String title) {
-       String checkStockQuery = "SELECT Stock FROM books WHERE Author = ? AND Title = ? ";
+    public int getStock(String author, String title) {
+        String checkStockQuery = "SELECT Stock FROM books WHERE Author = ? AND Title = ? ";
         try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
-           PreparedStatement prepareStatement = connection.prepareStatement(checkStockQuery);
-           prepareStatement.setString(1, author);
-           prepareStatement.setString(2, title);
-           ResultSet resultSet = prepareStatement.executeQuery();
+            PreparedStatement prepareStatement = connection.prepareStatement(checkStockQuery);
+            prepareStatement.setString(1, author);
+            prepareStatement.setString(2, title);
+            ResultSet resultSet = prepareStatement.executeQuery();
             while (resultSet.next()) {
-               return resultSet.getInt("Stock");
+                return resultSet.getInt("Stock");
             }
 
-       } catch (SQLException e) {
-           e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
 
-       }
-       return 0;
-   }
- public void purchaseBook(String author, String title, int numberOfPurchasedBooks) {
-     String updateStock = "UPDATE books SET Stock = Stock - ? WHERE Author = ? AND Title = ? ";
-     try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
-         PreparedStatement prepareStatement = connection.prepareStatement(updateStock);
-         prepareStatement.setInt(1, numberOfPurchasedBooks);
-         prepareStatement.setString(2, author);
-         prepareStatement.setString(3, title);
-         prepareStatement.executeUpdate();
+        }
+        return 0;
+    }
 
-     } catch (SQLException e) {
-         e.printStackTrace();
-     }
- }
+    public void purchaseBook(String author, String title, int numberOfPurchasedBooks) {
+        String updateStock = "UPDATE books SET Stock = Stock - ? WHERE Author = ? AND Title = ? ";
+        try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
+            PreparedStatement prepareStatement = connection.prepareStatement(updateStock);
+            prepareStatement.setInt(1, numberOfPurchasedBooks);
+            prepareStatement.setString(2, author);
+            prepareStatement.setString(3, title);
+            prepareStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
