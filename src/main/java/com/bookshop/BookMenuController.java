@@ -1,8 +1,6 @@
 package com.bookshop;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +14,6 @@ public class BookMenuController {
     private final Scanner userInput;
     private final BookService bookService;
 
-
     public BookMenuController(BookRepository bookRepository, Scanner userInput, BookService bookService) {
         this.bookRepository = bookRepository;
         this.userInput = userInput;
@@ -24,8 +21,12 @@ public class BookMenuController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<Book> getAllBooks(@RequestParam(required = false) String author) {
+        if (author!= null && !author.isEmpty()) {
+            return bookRepository.searchBook(author);
+        }else{
+            return bookRepository.findAll();
+        }
     }
 
     public void mainMenu() {
