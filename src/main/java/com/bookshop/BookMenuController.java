@@ -29,6 +29,13 @@ public class BookMenuController {
         }
     }
 
+   @GetMapping("/{id}")
+    @ResponseBody
+    public Book getBookById(@PathVariable Integer id) {
+            return bookService.getBookById(id);
+
+    }
+
     public void mainMenu() {
         System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Add book \n 4.Exit ");
         int optionNumber = userInput.nextInt();

@@ -1,7 +1,6 @@
 package com.bookshop;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -26,10 +25,7 @@ protected List<Book> findAll(){
         PreparedStatement prepareStatement = connection.prepareStatement(searchTable);
         ResultSet resultSet = prepareStatement.executeQuery();
         while (resultSet.next()) {
-            Book book = new Book();
-            book.setAuthor(resultSet.getString("Author"));
-            book.setTitle(resultSet.getString("Title"));
-            book.setStock(resultSet.getInt("Stock"));
+            Book book = createBook(resultSet);
             books.add(book);
 
         }
@@ -40,17 +36,14 @@ protected List<Book> findAll(){
 }
     protected List<Book> searchBook(String author) {
         List<Book> books = new ArrayList<>();
-        String searchTable = "SELECT Author, Title, Stock FROM books WHERE author LIKE ?";
+        String searchTable = "SELECT * FROM books WHERE author LIKE ?";
         try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
             PreparedStatement prepareStatement = connection.prepareStatement(searchTable);
             prepareStatement.setString(1, author);
             ResultSet resultSet = prepareStatement.executeQuery();
 
             while (resultSet.next()) {
-                Book book = new Book();
-                book.setAuthor(resultSet.getString("Author"));
-                book.setTitle(resultSet.getString("Title"));
-                book.setStock(resultSet.getInt("Stock"));
+                Book book = createBook(resultSet);
                 books.add(book);
 
             }
@@ -138,5 +131,33 @@ protected List<Book> findAll(){
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Book getBookByID(Integer id) {
+        String findBook = "SELECT * FROM books WHERE Id = ?";
+        try (Connection connection = DriverManager.getConnection(dbPath, user, password)) {
+            PreparedStatement prepareStatement = connection.prepareStatement(findBook);
+            prepareStatement.setInt(1, id);
+           ResultSet resultSet = prepareStatement.executeQuery();
+            if(resultSet.next()) {
+                Book book = createBook(resultSet);
+                return book;
+
+            }else{
+                return null;}
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private  Book createBook(ResultSet resultSet) throws SQLException {
+        Book book = new Book();
+        book.setId(resultSet.getInt("Id"));
+        book.setAuthor(resultSet.getString("Author"));
+        book.setTitle(resultSet.getString("Title"));
+        book.setStock(resultSet.getInt("Stock"));
+        return book;
     }
 }
