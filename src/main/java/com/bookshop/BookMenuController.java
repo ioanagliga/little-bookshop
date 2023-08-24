@@ -1,5 +1,10 @@
 package com.bookshop;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +17,7 @@ public class BookMenuController {
     private final BookRepository bookRepository;
 
     private final Scanner userInput;
+    @Autowired
     private final BookService bookService;
 
     public BookMenuController(BookRepository bookRepository, Scanner userInput, BookService bookService) {
@@ -22,19 +28,28 @@ public class BookMenuController {
 
     @GetMapping
     public List<Book> getAllBooks(@RequestParam(required = false) String author) {
-        if (author!= null && !author.isEmpty()) {
+        if (author != null && !author.isEmpty()) {
             return bookRepository.searchBook(author);
-        }else{
+        } else {
             return bookRepository.findAll();
         }
     }
 
-   @GetMapping("/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
     public Book getBookById(@PathVariable Integer id) {
-            return bookService.getBookById(id);
+        return bookService.getBookById(id);
 
     }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<HttpStatus> postController(@RequestBody Book book) {
+
+        bookService.addNewBookToStore(book.getAuthor(), book.getTitle(), book.getStock());
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
 
     public void mainMenu() {
         System.out.println("Choose an option: \n 1.Search \n 2.Buy \n 3.Add book \n 4.Exit ");
