@@ -1,5 +1,7 @@
 package com.bookshop;
 
+import java.util.List;
+
 public class BookService {
     private final BookRepository bookRepository;
 
@@ -44,5 +46,13 @@ public class BookService {
 
     public Book getBookById(Integer id) {
         return bookRepository.getBookByID(id);
+    }
+
+    public List<Book> searchBook(String author) {
+        return bookRepository.searchBook(author);
+    }
+
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 }

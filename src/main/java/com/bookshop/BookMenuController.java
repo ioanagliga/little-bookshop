@@ -1,6 +1,5 @@
 package com.bookshop;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +11,20 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookMenuController {
 
-    private final BookRepository bookRepository;
-    @Autowired
+
     private final BookService bookService;
 
     public BookMenuController(BookRepository bookRepository, BookService bookService) {
-        this.bookRepository = bookRepository;
+
         this.bookService = bookService;
     }
 
     @GetMapping
     public List<Book> getAllBooks(@RequestParam(required = false) String author) {
         if (author != null && !author.isEmpty()) {
-            return bookRepository.searchBook(author);
+            return bookService.searchBook(author);
         } else {
-            return bookRepository.findAll();
+            return bookService.findAll();
         }
     }
 
