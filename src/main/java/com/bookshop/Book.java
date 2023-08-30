@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Book {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
     private String author;

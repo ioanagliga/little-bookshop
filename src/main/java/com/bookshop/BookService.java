@@ -1,7 +1,9 @@
 package com.bookshop;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+@Service
 public class BookService {
     private final BookRepository bookRepository;
 
@@ -11,10 +13,9 @@ public class BookService {
     }
 
     public void searchAndDisplay(String author) {
-        if (!bookRepository.searchBook(author).isEmpty()) {
+        if (!bookRepository.findByAuthor(author).isEmpty()) {
             System.out.println("Author found. Books by them:");
-            System.out.println(bookRepository.searchBook(author));
-
+            System.out.println(bookRepository.findByAuthor(author));
         } else {
             System.out.println("Author  NOT found.");
             System.exit(0);
@@ -22,34 +23,41 @@ public class BookService {
     }
 
     public void addNewBookToStore(String author, String title, int stock) {
-
-        if (bookRepository.findMatchingBook(author, title)) {
+        Book existingBook = bookRepository.findByAuthorAndTitle(author, title);
+        if (existingBook != null) {
             System.out.println("book already in db.Updating stock.");
-            bookRepository.updateStockIfBookExist(author, title, stock);
+            existingBook.setStock(stock + existingBook.getStock());
+            bookRepository.save(existingBook);
         } else {
-            bookRepository.addBook(author, title, stock);
+            Book newBook=new Book();
+            newBook.setAuthor(author);
+            newBook.setTitle(title);
+            newBook.setStock(stock);
+            bookRepository.save(newBook);
             System.out.println("Added new book.");
         }
     }
 
     public boolean checkBookExist(String author, String title) {
-        return bookRepository.findMatchingBook(author, title);
+        return bookRepository.findByAuthorAndTitle(author, title) != null;
     }
 
     public void purchaseBook(String author, String title, int numberOfPurchasedBooks) {
-        if (bookRepository.getStock(author, title) >= numberOfPurchasedBooks) {
-            bookRepository.purchaseBook(author, title, numberOfPurchasedBooks);
+        Book book = bookRepository.findByAuthorAndTitle(author, title);
+        int stock = book.getStock();
+        if (stock >= numberOfPurchasedBooks) {
+            book.setStock(stock - numberOfPurchasedBooks);
         } else {
             System.out.println("Not enough stock :(");
         }
     }
 
-    public Book getBookById(Integer id) {
-        return bookRepository.getBookByID(id);
+    public Book getById(Integer id) {
+        return bookRepository.findById(id).get();
     }
 
-    public List<Book> searchBook(String author) {
-        return bookRepository.searchBook(author);
+    public List<Book> findByName(String author) {
+        return bookRepository.findByAuthor(author);
     }
 
     public List<Book> findAll() {
